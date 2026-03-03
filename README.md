@@ -52,8 +52,9 @@ npm install
 3. **Configure as Variáveis de Ambiente**
 Crie um arquivo na raiz chamado `.env.local` e rode os scripts SQL `/scripts/` presentes no repositório direto no seu **SQL Editor do Supabase**. No `.env.local`, coloque suas URL e Keys providas pelo projeto lá:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=SuaLinkDoProjetoAQUI
-NEXT_PUBLIC_SUPABASE_ANON_KEY=SuaChavePublicaAQUI
+NEXT_PUBLIC_SUPABASE_URL=https://zxhyzaozidqapxquxdse.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4aHl6YW96aWRxYXB4cXV4ZHNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MDM1MjAsImV4cCI6MjA4NzQ3OTUyMH0.2EHgzkyWdTxjtooadFYabUFXZ9Qk-j5iMH2TnNTyU1A
+
 ```
 
 4. **Inicie o servidor de desenvolvimento**
