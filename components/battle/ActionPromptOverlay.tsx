@@ -23,65 +23,92 @@ interface ActionPromptOverlayProps {
     prompt: ActionPrompt | null
     result: 'HIT' | 'MISS' | null
     onMobileAction: (key: string) => void
+    phase?: string // Added phase prop to know when to show buttons even without active prompts
 }
 
-export function ActionPromptOverlay({ prompt, result, onMobileAction }: ActionPromptOverlayProps) {
+export function ActionPromptOverlay({ prompt, result, onMobileAction, phase }: ActionPromptOverlayProps) {
     return (
-        <AnimatePresence>
-            {prompt && (
-                <motion.div
-                    key={prompt.key + prompt.boost}
-                    initial={{ opacity: 0, scale: 0.7, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.85, y: -10 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    className="my-4 flex flex-col items-center gap-3"
-                >
-                    {/* Result badge */}
-                    {result && (
-                        <motion.div
-                            initial={{ scale: 0.5, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            className={`text-xl font-black tracking-widest ${result === 'HIT' ? 'text-emerald-400' : 'text-red-400'}`}
-                        >
-                            {result === 'HIT' ? '✦ PERFEITO!' : '✘ ERROU!'}
-                        </motion.div>
-                    )}
-
-                    {/* Main prompt card */}
-                    {!result && (
-                        <motion.div
-                            animate={{ scale: [1, 1.04, 1] }}
-                            transition={{ duration: 0.4, repeat: Infinity }}
-                            className={`flex flex-col items-center gap-2 rounded-2xl bg-gradient-to-br ${PROMPT_COLORS[prompt.key]} px-8 py-5 shadow-2xl`}
-                        >
-                            <span className="text-4xl">{prompt.icon}</span>
-                            <span className="text-2xl font-black tracking-wider text-white">{prompt.label}</span>
-                            <span className="text-base font-bold text-white/70">
-                                Pressione <kbd className="rounded bg-black/30 px-2 py-0.5 font-mono">{KEY_DISPLAY[prompt.key]}</kbd>
-                            </span>
-                        </motion.div>
-                    )}
-
-                    {/* Mobile buttons — always visible */}
-                    <div className="flex gap-2 mt-1">
-                        {ACTION_PROMPTS_DISPLAY.map(p => (
-                            <button
-                                key={p.key}
-                                onClick={() => onMobileAction(p.key)}
-                                className={`flex flex-col items-center rounded-xl px-4 py-2 text-xs font-bold transition-all
-                                    ${prompt.key === p.key && !result
-                                        ? `bg-gradient-to-br ${PROMPT_COLORS[p.key]} text-white scale-110 shadow-lg`
-                                        : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+        <>
+            <AnimatePresence>
+                {prompt && (
+                    <motion.div
+                        key={prompt.key + prompt.boost}
+                        initial={{ opacity: 0, scale: 0.7, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.85, y: -10 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                        className="my-4 flex flex-col items-center gap-3"
+                    >
+                        {/* Result badge */}
+                        {result && (
+                            <motion.div
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className={`text-xl font-black tracking-widest ${result === 'HIT' ? 'text-emerald-400' : 'text-red-400'}`}
                             >
-                                <span className="text-lg">{p.icon}</span>
-                                <span>{p.label}</span>
-                                <span className="text-[10px] opacity-60">{KEY_DISPLAY[p.key]}</span>
-                            </button>
-                        ))}
+                                {result === 'HIT' ? '✦ PERFEITO!' : '✘ ERROU!'}
+                            </motion.div>
+                        )}
+
+                        {/* Main prompt card */}
+                        {!result && (
+                            <motion.div
+                                animate={{ scale: [1, 1.04, 1] }}
+                                transition={{ duration: 0.4, repeat: Infinity }}
+                                className={`flex flex-col items-center gap-2 rounded-2xl bg-gradient-to-br ${PROMPT_COLORS[prompt.key]} px-8 py-5 shadow-2xl`}
+                            >
+                                <span className="text-4xl">{prompt.icon}</span>
+                                <span className="text-2xl font-black tracking-wider text-white">{prompt.label}</span>
+                                <span className="text-base font-bold text-white/70">
+                                    Pressione <kbd className="rounded bg-black/30 px-2 py-0.5 font-mono">{KEY_DISPLAY[prompt.key]}</kbd>
+                                </span>
+                            </motion.div>
+                        )}
+
+                        {/* Original mobile buttons inside prompt - hidden on small screens since we have the new always-visible ones below */}
+                        <div className="hidden sm:flex gap-2 mt-1">
+                            {ACTION_PROMPTS_DISPLAY.map(p => (
+                                <button
+                                    key={p.key}
+                                    onClick={() => onMobileAction(p.key)}
+                                    className={`flex flex-col items-center rounded-xl px-4 py-2 text-xs font-bold transition-all
+                                    ${prompt.key === p.key && !result
+                                            ? `bg-gradient-to-br ${PROMPT_COLORS[p.key]} text-white scale-110 shadow-lg`
+                                            : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                                >
+                                    <span className="text-lg">{p.icon}</span>
+                                    <span>{p.label}</span>
+                                    <span className="text-[10px] opacity-60">{KEY_DISPLAY[p.key]}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Mobile buttons — always visible during FIGHTING phase even if no prompt */}
+            {
+                phase === 'FIGHTING' && (
+                    <div className="flex justify-center gap-2 mt-4 sm:hidden pb-4">
+                        {ACTION_PROMPTS_DISPLAY.map(p => {
+                            const isActivePrompt = prompt?.key === p.key && !result;
+                            return (
+                                <button
+                                    key={'mobile-' + p.key}
+                                    onClick={() => onMobileAction(p.key)}
+                                    className={`flex flex-col items-center rounded-xl px-4 py-3 text-xs font-bold transition-all active:scale-95 touch-manipulation
+                                ${isActivePrompt
+                                            ? `bg-gradient-to-br ${PROMPT_COLORS[p.key]} text-white shadow-lg ring-2 ring-white/50`
+                                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 shadow-md'}`}
+                                >
+                                    <span className="text-xl mb-1">{p.icon}</span>
+                                    <span className="uppercase">{p.label}</span>
+                                </button>
+                            )
+                        })}
                     </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                )
+            }
+        </>
     )
 }

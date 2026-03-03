@@ -184,7 +184,7 @@ export default function BattlePage() {
                                             key={char.id}
                                             charId={char.id}
                                             char={char}
-                                            attackAttr={attackAttributes[char.id] ?? CATEGORIES[0]}
+                                            attackAttr={attackAttributes[char.id] || CATEGORIES[0]}
                                             onAttrChange={attr => setAttackAttribute(char.id, attr)}
                                         />
                                     ))}
@@ -299,6 +299,7 @@ export default function BattlePage() {
                                 prompt={activePrompt}
                                 result={promptResult}
                                 onMobileAction={handleMobileAction}
+                                phase={phase}
                             />
                             <BoostScoreFloat delta={promptResult === 'HIT' && !activePrompt ? boostDelta : null} />
                         </div>

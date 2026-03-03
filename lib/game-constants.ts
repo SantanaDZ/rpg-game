@@ -17,7 +17,7 @@ export const CHARACTER_TYPES = [
         label: "Cavaleiro",
         isPlayable: true,
         image: "/cavaleiro.png",
-        baseStats: { strength: 8, intelligence: 4, agility: 5, endurance: 8, charisma: 5 },
+        baseStats: { strength: 7, intelligence: 3, agility: 4, endurance: 7, charisma: 4 },
         maxStats: { strength: 20, intelligence: 10, agility: 12, endurance: 20, charisma: 12 }
     },
     {
@@ -25,22 +25,22 @@ export const CHARACTER_TYPES = [
         label: "Arqueira",
         isPlayable: true,
         image: "/arqueira.png",
-        baseStats: { strength: 4, intelligence: 5, agility: 9, endurance: 4, charisma: 8 },
+        baseStats: { strength: 3, intelligence: 4, agility: 8, endurance: 3, charisma: 7 },
         maxStats: { strength: 10, intelligence: 12, agility: 25, endurance: 10, charisma: 18 }
     },
     {
         value: "wizard",
         label: "Mago",
-        isPlayable: false,
+        isPlayable: true,
         unlockCost: 500,
         image: "/mago.png",
-        baseStats: { strength: 3, intelligence: 9, agility: 5, endurance: 3, charisma: 10 },
+        baseStats: { strength: 2, intelligence: 8, agility: 4, endurance: 2, charisma: 9 },
         maxStats: { strength: 8, intelligence: 25, agility: 12, endurance: 8, charisma: 25 }
     },
     {
         value: "skeleton",
         label: "Esqueleto",
-        isPlayable: false,
+        isPlayable: true,
         unlockCost: 300,
         image: "/esqueleto.png",
         baseStats: { strength: 6, intelligence: 3, agility: 7, endurance: 5, charisma: 4 },
@@ -49,10 +49,10 @@ export const CHARACTER_TYPES = [
     {
         value: "tank",
         label: "Tanque",
-        isPlayable: false,
+        isPlayable: true,
         unlockCost: 800,
         image: "/tanque.png",
-        baseStats: { strength: 10, intelligence: 2, agility: 3, endurance: 10, charisma: 5 },
+        baseStats: { strength: 8, intelligence: 1, agility: 3, endurance: 9, charisma: 4 },
         maxStats: { strength: 25, intelligence: 6, agility: 8, endurance: 30, charisma: 10 }
     },
     {
@@ -60,7 +60,7 @@ export const CHARACTER_TYPES = [
         label: "Rei",
         isPlayable: true,
         image: "/rei.png",
-        baseStats: { strength: 6, intelligence: 6, agility: 5, endurance: 6, charisma: 7 },
+        baseStats: { strength: 5, intelligence: 5, agility: 5, endurance: 5, charisma: 5 },
         maxStats: { strength: 18, intelligence: 18, agility: 12, endurance: 18, charisma: 25 }
     },
     {
@@ -68,16 +68,16 @@ export const CHARACTER_TYPES = [
         label: "Rainha",
         isPlayable: true,
         image: "/rainha.png",
-        baseStats: { strength: 4, intelligence: 8, agility: 6, endurance: 4, charisma: 8 },
+        baseStats: { strength: 3, intelligence: 7, agility: 5, endurance: 3, charisma: 7 },
         maxStats: { strength: 12, intelligence: 25, agility: 18, endurance: 12, charisma: 25 }
     },
     {
         value: "ogre",
         label: "Ogro",
-        isPlayable: false,
+        isPlayable: true,
         unlockCost: 1000,
         image: "/ogro.png",
-        baseStats: { strength: 12, intelligence: 1, agility: 2, endurance: 12, charisma: 3 },
+        baseStats: { strength: 10, intelligence: 1, agility: 2, endurance: 10, charisma: 2 },
         maxStats: { strength: 30, intelligence: 5, agility: 8, endurance: 25, charisma: 8 }
     },
 ]

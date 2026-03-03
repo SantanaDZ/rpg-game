@@ -36,7 +36,7 @@ export default async function EditCharacterPage({
         <header className="mb-8 flex items-center gap-3">
           <Link href="/protected" className="flex items-center gap-2">
             <Swords className="h-7 w-7 text-primary" />
-            <span className="font-serif text-xl font-bold text-foreground">CB Games</span>
+            <span className="font-serif text-xl font-bold text-foreground">SDZ Games</span>
           </Link>
           <span className="text-muted-foreground">/</span>
           <h1 className="font-serif text-xl font-bold text-foreground">Editar Personagem</h1>

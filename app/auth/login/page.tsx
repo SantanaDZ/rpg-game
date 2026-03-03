@@ -59,7 +59,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
             <Swords className="h-8 w-8 text-primary" />
-            <span className="font-serif text-2xl font-bold text-foreground">CB Games</span>
+            <span className="font-serif text-2xl font-bold text-foreground">SDZ Games</span>
           </Link>
           <p className="text-sm text-muted-foreground">Entre na sua conta para continuar</p>
         </div>
@@ -87,9 +87,14 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-sm font-medium text-foreground">
-              Senha
-            </label>
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="text-sm font-medium text-foreground">
+                Senha
+              </label>
+              <Link href="/auth/forgot-password" className="text-xs font-medium text-amber-500 hover:text-amber-400">
+                Esqueceu a senha?
+              </Link>
+            </div>
             <div className="relative">
               <input
                 id="password"

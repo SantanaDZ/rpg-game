@@ -40,8 +40,8 @@ export function MatchupRow({ result }: { result: MatchupResult }) {
                 </span>
                 <span className="text-sm font-bold text-slate-200 truncate">{result.playerCharName}</span>
                 <span className="text-xs text-slate-500 flex items-center gap-1 flex-shrink-0">
-                    {CATEGORY_ICONS[result.attackAttribute.id]}
-                    {result.attackAttribute.label}
+                    {CATEGORY_ICONS[result.attackAttribute?.id || 'strength']}
+                    {result.attackAttribute?.label || 'Força'}
                 </span>
                 <span className={`text-xs font-bold tabular-nums flex-shrink-0 ${won ? 'text-blue-300' : 'text-red-300'}`}>
                     {result.playerStat} {won ? '>' : '<'} {result.mobStat}

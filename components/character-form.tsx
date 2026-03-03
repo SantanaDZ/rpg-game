@@ -50,18 +50,22 @@ export function CharacterForm({ initialData, mode }: CharacterFormProps) {
   const [error, setError] = useState<string | null>(null)
 
   const [name, setName] = useState(initialData?.name ?? "")
-  const [strength, setStrength] = useState(initialData?.strength ?? 5)
-  const [intelligence, setIntelligence] = useState(initialData?.intelligence ?? 5)
-  const [agility, setAgility] = useState(initialData?.agility ?? 5)
-  const [endurance, setEndurance] = useState(initialData?.endurance ?? 5)
-  const [charisma, setCharisma] = useState(initialData?.charisma ?? 5)
+  const [characterType, setCharacterType] = useState(initialData?.character_type ?? "knight")
+
+  // Use default class stats instead of flat 5s
+  const initialClass = CHARACTER_TYPES.find(t => t.value === (initialData?.character_type ?? "knight")) || CHARACTER_TYPES[0]
+  const [strength, setStrength] = useState(initialData?.strength ?? initialClass.baseStats.strength)
+  const [intelligence, setIntelligence] = useState(initialData?.intelligence ?? initialClass.baseStats.intelligence)
+  const [agility, setAgility] = useState(initialData?.agility ?? initialClass.baseStats.agility)
+  const [endurance, setEndurance] = useState(initialData?.endurance ?? initialClass.baseStats.endurance)
+  const [charisma, setCharisma] = useState(initialData?.charisma ?? initialClass.baseStats.charisma)
+
   const [skinColor, setSkinColor] = useState(initialData?.skin_color ?? "#c8a27a")
   const [hairColor, setHairColor] = useState(initialData?.hair_color ?? "#2c1b0e")
   const [hairStyle, setHairStyle] = useState(initialData?.hair_style ?? "curto")
   const [eyeColor, setEyeColor] = useState(initialData?.eye_color ?? "#4a3728")
   const [armorType, setArmorType] = useState(initialData?.armor_type ?? "none")
   const [weaponType, setWeaponType] = useState(initialData?.weapon_type ?? "none")
-  const [characterType, setCharacterType] = useState(initialData?.character_type ?? "knight")
   const [xp, setXp] = useState(initialData?.xp ?? 0)
 
   const level = getLevel(xp)

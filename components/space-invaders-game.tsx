@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Rocket, Skull, Swords, Shield, Heart, Zap, Brain, ArrowLeft, Play } from "lucide-react"
+import { Rocket, Skull, Swords, Shield, Heart, Zap, Brain, ArrowLeft, ArrowRight, Play } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { calculateEffectiveStats, CHARACTER_TYPES, getLevel } from "@/lib/game-constants"
 import { PixelCharacterAvatar } from "@/components/pixel-character-avatar"
@@ -417,8 +417,8 @@ export default function SpaceInvadersGame({ onBack, themeColor = "#cbd5e1" }: Sp
       }
     }
 
-    // Move invaders with wave scale + charisma check
-    const baseWait = Math.max(200, 800 - (gameStateRef.current.wave - 1) * 25)
+    // Move invaders with wave scale + charisma check - Made scaling gentler for wave 2+
+    const baseWait = Math.max(300, 900 - (gameStateRef.current.wave - 1) * 15)
     const charWait = baseWait / gameModifiers.enemySpeedMult
 
     if (currentTime - gameStateRef.current.lastInvaderMove > charWait) {
@@ -438,14 +438,14 @@ export default function SpaceInvadersGame({ onBack, themeColor = "#cbd5e1" }: Sp
       if (shouldMoveDown) {
         gameStateRef.current.invaderDirection *= -1
         for (const invader of aliveInvaders) {
-          invader.y += 20
+          invader.y += 15 // reduced from 20 to 15
           if (invader.y + invader.height >= player.y) {
             endGame(false)
             return
           }
         }
       } else {
-        const moveDist = 15 + (gameStateRef.current.wave - 1) * 1.5
+        const moveDist = 12 + (gameStateRef.current.wave - 1) * 0.8 // reduced base speed and scaling
         for (const invader of aliveInvaders) {
           invader.x += moveDist * gameStateRef.current.invaderDirection
         }
@@ -453,8 +453,8 @@ export default function SpaceInvadersGame({ onBack, themeColor = "#cbd5e1" }: Sp
       gameStateRef.current.lastInvaderMove = currentTime
     }
 
-    // Invader shooting freq depends on wave AND charisma
-    const shootFreq = (1500 + Math.random() * 2500) / gameModifiers.enemySpeedMult
+    // Invader shooting freq depends on wave AND charisma - reduced freq
+    const shootFreq = (2000 + Math.random() * 3000) / gameModifiers.enemySpeedMult
     if (currentTime - gameStateRef.current.lastInvaderShot > shootFreq) {
       const aliveInvaders = invaders.filter((inv) => inv.alive)
       if (aliveInvaders.length > 0) {
@@ -680,12 +680,12 @@ export default function SpaceInvadersGame({ onBack, themeColor = "#cbd5e1" }: Sp
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 p-8">
-      <div className="relative">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 p-4 sm:p-8">
+      <div className="relative w-full max-w-[800px]">
         <canvas
           ref={canvasRef}
-          className="border border-slate-800 rounded-lg shadow-2xl shadow-indigo-500/10"
-          style={{ maxWidth: "100%", height: "auto" }}
+          className="border border-slate-800 rounded-lg shadow-2xl shadow-indigo-500/10 w-full"
+          style={{ width: "100%", height: "auto", touchAction: "none" }}
         />
         {gameState === "menu" && selectedCharacter && effectiveStats && (
           <div className="absolute inset-0 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm rounded-lg">
@@ -760,6 +760,44 @@ export default function SpaceInvadersGame({ onBack, themeColor = "#cbd5e1" }: Sp
           </div>
         )}
       </div>
+
+      {/* Mobile Touch Controls */}
+      {gameState === "playing" && (
+        <div className="flex justify-between items-center w-full max-w-[800px] mt-6 px-4 sm:hidden">
+          <div className="flex gap-4">
+            <button
+              className="bg-slate-800 text-slate-100 p-4 rounded-full border border-slate-700 active:bg-slate-700 shadow-lg select-none touch-manipulation"
+              onTouchStart={(e) => { e.preventDefault(); gameStateRef.current.keys.add("arrowleft"); }}
+              onTouchEnd={(e) => { e.preventDefault(); gameStateRef.current.keys.delete("arrowleft"); }}
+              onMouseDown={() => gameStateRef.current.keys.add("arrowleft")}
+              onMouseUp={() => gameStateRef.current.keys.delete("arrowleft")}
+              onMouseLeave={() => gameStateRef.current.keys.delete("arrowleft")}
+            >
+              <ArrowLeft className="w-8 h-8" />
+            </button>
+            <button
+              className="bg-slate-800 text-slate-100 p-4 rounded-full border border-slate-700 active:bg-slate-700 shadow-lg select-none touch-manipulation"
+              onTouchStart={(e) => { e.preventDefault(); gameStateRef.current.keys.add("arrowright"); }}
+              onTouchEnd={(e) => { e.preventDefault(); gameStateRef.current.keys.delete("arrowright"); }}
+              onMouseDown={() => gameStateRef.current.keys.add("arrowright")}
+              onMouseUp={() => gameStateRef.current.keys.delete("arrowright")}
+              onMouseLeave={() => gameStateRef.current.keys.delete("arrowright")}
+            >
+              <ArrowRight className="w-8 h-8" />
+            </button>
+          </div>
+          <button
+            className="bg-amber-600 text-white p-4 rounded-full border border-amber-500 active:bg-amber-500 shadow-lg shadow-amber-900/50 select-none touch-manipulation"
+            onTouchStart={(e) => { e.preventDefault(); gameStateRef.current.keys.add(" "); shoot(); }}
+            onTouchEnd={(e) => { e.preventDefault(); gameStateRef.current.keys.delete(" "); }}
+            onMouseDown={() => { gameStateRef.current.keys.add(" "); shoot(); }}
+            onMouseUp={() => gameStateRef.current.keys.delete(" ")}
+            onMouseLeave={() => gameStateRef.current.keys.delete(" ")}
+          >
+            <Zap className="w-8 h-8" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }

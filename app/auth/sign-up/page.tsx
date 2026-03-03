@@ -63,7 +63,7 @@ export default function SignUpPage() {
         <div className="flex flex-col items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
             <Swords className="h-8 w-8 text-primary" />
-            <span className="font-serif text-2xl font-bold text-foreground">CB Games</span>
+            <span className="font-serif text-2xl font-bold text-foreground">SDZ Games</span>
           </Link>
           <p className="text-sm text-muted-foreground">Crie sua conta para comecar</p>
         </div>

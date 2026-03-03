@@ -7,7 +7,7 @@ export default function AuthErrorPage() {
       <div className="w-full max-w-sm flex flex-col items-center gap-6 text-center">
         <Link href="/" className="flex items-center gap-2">
           <Swords className="h-8 w-8 text-primary" />
-          <span className="font-serif text-2xl font-bold text-foreground">CB Games</span>
+          <span className="font-serif text-2xl font-bold text-foreground">SDZ Games</span>
         </Link>
 
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 border border-destructive/20">

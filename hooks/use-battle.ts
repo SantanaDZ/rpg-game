@@ -52,9 +52,9 @@ function getMobName(type: string, wave: number): string {
     return names[Math.floor(Math.random() * names.length)]
 }
 
-// ── Enemy types only ──────────────────────────────────────────────────────────
-
-const ENEMY_TYPES = CHARACTER_TYPES.filter(t => !t.isPlayable)
+// Bug fix: If all characters are playable, fallback to all characters being enemies
+const NON_PLAYABLE = CHARACTER_TYPES.filter(t => !t.isPlayable)
+const ENEMY_TYPES = NON_PLAYABLE.length > 0 ? NON_PLAYABLE : CHARACTER_TYPES
 
 // Bug #8 fix: use actual DEFENSE_POWERS / ATTACK_POWERS values
 const ARMOR_POOL = ["none", "regen", "ice_shield", "divine_guard", "oak_skin"]
@@ -313,7 +313,7 @@ export function useDungeon(characters: Character[], speed: BattleSpeed = 'normal
             const char = characters.find(c => c.id === characterOrder[i])
             if (!char) continue
             const mob = mobs[i]
-            const attr = attackAttributes[characterOrder[i]] ?? CATEGORIES[0]
+            const attr = attackAttributes[characterOrder[i]] || CATEGORIES[0]
 
             const resolved = resolveDungeonMatchup(char, mob, attr, boost ?? undefined)
 
